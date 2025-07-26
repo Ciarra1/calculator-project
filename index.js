@@ -172,6 +172,22 @@ function restoreLastEquation(){
 function deleteLast(){
   document.querySelector(".equation").textContent = document.querySelector(".equation").textContent.slice(0,-1);
 } 
+function autoResizeFont(){
+  const equation = document.querySelector(".equation");
+  const container = equation.parentElement;
+
+  let fontSize = 40;
+  equation.style.fontSize = fontSize + "px";
+
+  while(equation.scrollWidth > container.clientWidth && fontSize > 20){
+    equation.style.fontSize = --fontSize + "px";
+  }
+
+  const btns = document.querySelectorAll(".buttons-div button");
+  btns.forEach((btn) => {
+    btn.addEventListener("click", autoResizeFont); // no ()
+  });
+}
 function evaluateExpression(){
 
   if(getInfix() == ""){
@@ -199,3 +215,6 @@ function evaluateExpression(){
 
 
 
+document.addEventListener("DOMContentLoaded", () => {
+  autoResizeFont();
+});
