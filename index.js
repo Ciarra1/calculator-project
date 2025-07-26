@@ -2,6 +2,13 @@ function getInfix(){
     const infix = document.querySelector(".equation").textContent;
     return infix;
 }
+const operations = {
+    '+': add,
+    '-': subtract,
+    '*': multiply,
+    '/': divide,
+    '%': modulo
+};
 
 class TreeNode{
     constructor(value){
@@ -10,15 +17,17 @@ class TreeNode{
         this.right = null;
     }
 }
-function getTokens(){
-    const infix = getInfix();
-    const tokens = infix.split("");
-
-    return tokens;
+function getOperatorTokens() {
+  const equation = getInfix();
+  
+  // Replace negative numbers temporarily
+  const temp = equation.replace(/(?<!\d)-\d+(\.\d+)?/g, 'temp');
+  
+  // Match only real operators (not negative signs)
+  return temp.match(/[+\-*/%]/g) || [];
 }
-function getOperatorTokens(){
-    const equation = getInfix();
-    return equation.split(/(?<=[\d)])(?=[+\-*/%])|(?<=[+\-*/%])(?=[\d])/);
+function isOperator(token) {
+  return ['+', '-', '*', '/', '%'].includes(token);
 }
 function getNegativeNumberFromEquation(equation) {
   const regex = /(?<!\d|\))-(\d+(\.\d+)?)/g;
@@ -31,34 +40,130 @@ function getNegativeNumberFromEquation(equation) {
 
   return negatives;
 }
-function findRoot(){
-    let currentPrec = -1;
-    let addSub = [];
-    let mulDiv = [];
-    const precLevel = {
-        '*':2,
-        '/':2,
-        '+':1,
-        '-':1,
-    }
-    const operatorTokens = getOperatorTokens();
-    const firstOperator = operatorTokens[0];
-    console.log("operator tokens: " + operatorTokens);
-    for(let i = 0; i < operatorTokens.length; i++){
-        const op = operatorTokens[i];
-        currentPrec = precLevel[op];
 
-        if(currentPrec === 1){
-            addSub.push(op); 
-        }else{
-            mulDiv.push(op);
+function tokenize(expression) {
+  // Match numbers (including decimals) or operators
+  return expression.match(/-?\d+(\.\d+)?|[+\-*/%]/g);
+}
+function precedence(op) {
+  if (op === '+' || op === '-') return 1;
+  if (op === '*' || op === '/' || op === '%') return 2;
+  return 0;
+}
+
+function findRootIndex(tokens){
+    let minPrec = Infinity;
+    let rootIndex = -1;
+
+    for(let i = tokens.length -1; i>=0; i--){
+        const token = tokens[i];
+        if(isOperator(token)){
+            let prec = precedence(token);
+            if(prec <= minPrec){
+                minPrec = prec;
+                rootIndex = i;
+            }
         }
     }
-    if(addSub.length == 0){
-        return mulDiv[mulDiv.length-1];
-    }else{
-        return addSub[addSub.length-1];
-    }
+    return rootIndex;
 }
-console.log("negatives" + getNegativeNumberFromEquation(getInfix()));
-console.log("Root: " + findRoot());
+function buildTree(tokens){
+    if(tokens.length === 1){
+        return new TreeNode(tokens[0]);
+    }
+
+    const rootIndex = findRootIndex(tokens);
+    const root = new TreeNode(tokens[rootIndex]);
+
+      if (rootIndex === -1) {
+    // If no operator found, treat entire expression as single operand
+    return new TreeNode(tokens.join(""));
+  }
+
+    let leftSubtree = tokens.slice(0,rootIndex);
+    let rightSubtree = tokens.slice(rootIndex+1);
+
+    root.left = buildTree(leftSubtree);
+    root.right = buildTree(rightSubtree);
+
+    return root;
+}
+function inorder(node) {
+  if (!node) return '';
+  if (!node.left && !node.right) return node.value;
+  return '(' + inorder(node.left) + node.value + inorder(node.right) + ')';
+}
+
+function postorder(node){
+    if(!node) return [];
+    return [...postorder(node.left), ...postorder(node.right), node.value];
+}
+
+function postfix(tokens) {
+  const output = [];
+  const opStack = [];
+
+  for (const token of tokens) {
+    if (!isOperator(token)) {
+      output.push(token);
+    } else {
+      while (
+        opStack.length > 0 &&
+        precedence(opStack[opStack.length - 1]) >= precedence(token)
+      ) {
+        output.push(opStack.pop());
+      }
+      opStack.push(token);
+    }
+  }
+
+  while (opStack.length > 0) {
+    output.push(opStack.pop());
+  }
+
+  return output;
+}
+
+function evalPostfix(postfix){
+    let flag = 0;
+    let operandStack = [];
+    let operatorStack = [];
+    let result;
+    for(let i = 0; i < postfix.length; i++){
+        if(!isOperator(postfix[i])){
+            operandStack.push(postfix[i]);
+        } else {
+            //an operator has been found
+            let op = postfix[i];
+            operatorStack.push(op);
+ 
+            let secondOperand = parseFloat(operandStack.pop());
+            let firstOperand = parseFloat(operandStack.pop());
+            result = operations[operatorStack.pop()](firstOperand,secondOperand);
+            operandStack.push(result);
+            
+        }
+    }
+    return result;
+}
+function add(a,b){
+    return a + b;
+}
+function subtract(a,b){
+    return a-b;
+}
+function multiply(a,b){
+    return a*b;
+}
+function divide(a,b){
+    return a/b
+} 
+function modulo(a,b){
+    return a%b;
+}
+let tokens = tokenize("-3.5 + 4 * -2 - 7 / 3.5 + -6 % 2");
+let postfixExpre = postfix(tokens);
+let result = evalPostfix(postfixExpre);
+console.log("result:" +result);
+console.log("tokens: " + tokens);
+
