@@ -65,6 +65,6 @@
   font-size: 30px;
 }
 
-#equals-operator {
-  grid-column: span 2;
-}
+//#equals-operator {
+ // grid-column: span 2;
+//}

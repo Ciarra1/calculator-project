@@ -1,5 +1,7 @@
+
+
 function getInfix(){
-    const infix = document.querySelector(".equation").textContent;
+    const infix = document.querySelector(".equation").textContent.trim();
     return infix;
 }
 const operations = {
@@ -43,7 +45,7 @@ function getNegativeNumberFromEquation(equation) {
 
 function tokenize(expression) {
   // Match numbers (including decimals) or operators
-  return expression.match(/-?\d+(\.\d+)?|[+\-*/%]/g);
+  return expression.match(/(?<!\d|\))-\d+(\.\d+)?|\d+(\.\d+)?|[+\-*/%]/g);
 }
 function precedence(op) {
   if (op === '+' || op === '-') return 1;
@@ -161,9 +163,39 @@ function divide(a,b){
 function modulo(a,b){
     return a%b;
 }
-let tokens = tokenize("-3.5 + 4 * -2 - 7 / 3.5 + -6 % 2");
-let postfixExpre = postfix(tokens);
-let result = evalPostfix(postfixExpre);
-console.log("result:" +result);
-console.log("tokens: " + tokens);
+
+
+let lastEquation;
+function restoreLastEquation(){
+  document.querySelector(".equation").textContent = lastEquation;
+}
+function deleteLast(){
+  document.querySelector(".equation").textContent = document.querySelector(".equation").textContent.slice(0,-1);
+} 
+function evaluateExpression(){
+
+  if(getInfix() == ""){
+    return;
+  }
+  lastEquation = getInfix();
+  
+  //getting the input from calculator
+  console.log("calculator input");
+  let tokens = tokenize(getInfix());
+  let postfixExpre = postfix(tokens);
+  let result = evalPostfix(postfixExpre);
+  console.log("Calculator result:" +result);
+  console.log(" Calculator tokens: " + tokens);
+
+  //
+  console.log("String input");
+  let strTokens = tokenize("-3.2 + 6 * 2 - 8 / -4 + 7 % 3");
+  let strPostfixExpre = postfix(strTokens);
+  let strResult = evalPostfix(strPostfixExpre);
+  console.log("String result:" +strResult);
+  console.log(" String tokens: " + strTokens);
+  document.querySelector(".equation").textContent = result.toString();
+}
+
+
 
