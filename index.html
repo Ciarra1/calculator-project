@@ -11,120 +11,122 @@
     />
   </head>
   <body>
-    <script src="index.js" defer></script>
-    <header class="header">
-      <h1 class="calculator-h1">Calculator</h1>
-    </header>
-    <div class="content">
-      <div class="calculator-container">
-        <div class="display-div">
-          <div class="display-box">
-            <h2 class="equation"></h2>
+    <div class="container">
+      <script src="index.js" defer></script>
+      <header class="header">
+        <h1 class="calculator-h1">Calculator</h1>
+      </header>
+      <div class="content">
+        <div class="calculator-container">
+          <div class="display-div">
+            <div class="display-box">
+              <h2 class="equation"></h2>
+            </div>
+          </div>
+          <div class="buttons-div">
+            <button
+              onclick="document.querySelector('.equation').textContent = ''"
+            >
+              AC
+            </button>
+            <button onclick="deleteLast()">C</button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '%'"
+            >
+              %
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '/'"
+            >
+              /
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '7'"
+            >
+              7
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '8'"
+            >
+              8
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '9'"
+            >
+              9
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '*'"
+            >
+              *
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '4'"
+            >
+              4
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '5'"
+            >
+              5
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '6'"
+            >
+              6
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '+'"
+            >
+              +
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '1'"
+            >
+              1
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '2'"
+            >
+              2
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '3'"
+            >
+              3
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '-'"
+            >
+              -
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '0'"
+            >
+              0
+            </button>
+            <button
+              onclick="document.querySelector('.equation').textContent += '.'"
+            >
+              .
+            </button>
+            <button onclick="restoreLastEquation()">Restore</button>
+            <button
+              class="operators"
+              id="equals-operator"
+              onclick="evaluateExpression()"
+            >
+              =
+            </button>
           </div>
         </div>
-        <div class="buttons-div">
-          <button
-            onclick="document.querySelector('.equation').textContent = ''"
-          >
-            AC
-          </button>
-          <button onclick="deleteLast()">C</button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '%'"
-          >
-            %
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '/'"
-          >
-            /
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '7'"
-          >
-            7
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '8'"
-          >
-            8
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '9'"
-          >
-            9
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '*'"
-          >
-            *
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '4'"
-          >
-            4
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '5'"
-          >
-            5
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '6'"
-          >
-            6
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '+'"
-          >
-            +
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '1'"
-          >
-            1
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '2'"
-          >
-            2
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '3'"
-          >
-            3
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '-'"
-          >
-            -
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '0'"
-          >
-            0
-          </button>
-          <button
-            onclick="document.querySelector('.equation').textContent += '.'"
-          >
-            .
-          </button>
-          <button onclick="restoreLastEquation()">Restore</button>
-          <button
-            class="operators"
-            id="equals-operator"
-            onclick="evaluateExpression()"
-          >
-            =
-          </button>
-        </div>
+        <footer class="footer">
+          <h1 class="footer-copyright">Copyright © 2025 Ciarra1</h1>
+          <a href="https://github.com/Ciarra1">
+            <img src="github-mark/github-mark.png" alt="" />
+          </a>
+        </footer>
       </div>
-      <footer class="footer">
-        <h1 class="footer-copyright">Copyright © 2025 Ciarra1</h1>
-        <a href="https://github.com/Ciarra1">
-          <img src="github-mark/github-mark.png" alt="" />
-        </a>
-      </footer>
     </div>
   </body>
 </html>
