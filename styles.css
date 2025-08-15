@@ -93,8 +93,7 @@ body {
 }
 
 @media (max-width: 550px) {
-  .container {
+  .content {
     transform: scale(0.85);
-    margin: ;
   }
 }
